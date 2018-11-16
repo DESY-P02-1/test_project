@@ -1,20 +1,31 @@
-## Documentation: http://docs.travis-ci.com/user/languages/python/
 language: python
 os:
-  - linux
+- linux
 python:
-  - 3.5
+- 3.5
 
-## uncomment and modify the following lines to manually install system packages
-#addons:
-#  apt: # apt-get for linux
-#    packages:
-#    - gfortran
+branches:
+  except:
+    - build_log
 
 install:
-  - pip install flake8
-  - pip install .
+- pip install flake8
+- pip install .
 
 script:
-  - flake8
-  - pytest
+- flake8
+- pytest
+
+after_success:
+- echo $TRAVIS_BUILD_NUMBER >> build_log.txt
+- git config --global user.email "travis@travis-ci.org"
+- git config --global user.name "Travis CI"
+- git checkout build_log
+- git commit -m "New release $TRAVIS_COMMIT" build_log.txt
+- git remote add origin-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git > /dev/null 2>&1
+- git push
+
+
+env:
+  global:
+    secure: pfUDNtGwxhMM8Ghv6Wgh1jGYGYPxUvmyWrK4VYuKQ1l1YvwMM0qavvtEROyzyvRK7UUmhknbnYdpgEen48BAbAbHkebjN9lb0gXR0QnqcpUxxf73FNR+XEgDEcmnu211SDkm+Auc9s8rtT0x/K9Wdg6ceH+zb76mv9fIX9feB5s5pDI1HrbwefCReNOQuNxSmhS5dbEwUmP1auPHBNelCHyDqNNHXJA5Jf462b8013HBc5Ujq2j1sjy3/PGDS8RtiCrjUxc3rb8waEWEpCvBXJCtRw5zcxWyrxezICY8j4qC1eqtG33fmVw3MUr3QreVAwLACS0qPHDf5/Ebt+YTbf8Qb0yaRvcmFw7eZPRfQtV4awsvjbvpLZnjgwJjV/BXW8CWZ5GMQ2Zn60NA8CDJxENRTbZLZtdUVgOUHPVI4VjrcUcSEu4BLE6F29QHvoph5OFSyi640otpvwg34BK+1YKdA9OLHYUVhDkfJLJ/heNCUwGwhy3NZonfSIlwOScZW/JXEA17FjYiaC4dbaUfywBLVEPm42GfinJI/6Icg7LBIdj45lbX2Wjm2EtBiszJcDaqmvAVclQCvBcXoCSYOahZPh5utg+SfV+khrcsnElvCllVVoA0mH0jc5UUtQMbX5Ib0/F7fXaMOf2G45tleUls6PunrcHJUodXVfRTC10=
