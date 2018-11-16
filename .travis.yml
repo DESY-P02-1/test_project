@@ -23,10 +23,9 @@ after_success:
 - echo $TRAVIS_BUILD_NUMBER >> build_log.txt
 - git config --global user.email "travis@travis-ci.org"
 - git config --global user.name "Travis CI"
-- git checkout build_log
 - git commit -m "New release $TRAVIS_COMMIT" build_log.txt
-- git remote add origin-pages https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git > /dev/null 2>&1
-- git push
+- git remote add origin-build_log https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git > /dev/null 2>&1
+- git push --quiet --set-upstream origin-build_log build_log
 
 
 env:
