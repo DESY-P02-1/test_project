@@ -17,6 +17,9 @@ script:
 - pytest
 
 after_success:
+- git clone -b build --single-branch --depth=1 https://github.com/${TRAVIS_REPO_SLUG}.git $TRAVIS_COMMIT
+- cd $TRAVIS_COMMIT
+- ls -al
 - echo $TRAVIS_BUILD_NUMBER >> build_log.txt
 - git config --global user.email "travis@travis-ci.org"
 - git config --global user.name "Travis CI"
