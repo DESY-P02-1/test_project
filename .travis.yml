@@ -17,7 +17,7 @@ script:
 - pytest
 
 after_success:
-- git clone -b build --single-branch --depth=1 https://github.com/${TRAVIS_REPO_SLUG}.git $TRAVIS_COMMIT
+- git clone -b build_log --single-branch --depth=1 https://github.com/${TRAVIS_REPO_SLUG}.git $TRAVIS_COMMIT
 - cd $TRAVIS_COMMIT
 - ls -al
 - echo $TRAVIS_BUILD_NUMBER >> build_log.txt
